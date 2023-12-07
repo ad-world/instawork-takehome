@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports: 
+      - "4173:4173"
+    volumes:
+      - .:/usr/src/app
+    environment:
+      - NODE_ENV=production
+    container_name: instawork-frontend
+    stdin_open: true
+    tty: true
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports: 
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+    environment:
+      - NODE_ENV=production
+    stdin_open: true
+    container_name: instawork_backend
+    tty: true
