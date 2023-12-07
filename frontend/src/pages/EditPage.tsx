@@ -9,7 +9,6 @@ interface UpdateForm extends UserDetailsForm {
     user_id: number
 }
 
-
 const EditPage = () => {
     const { id } = useParams();
     const [loading, setLoading] = useState<boolean>(true);
@@ -46,19 +45,14 @@ const EditPage = () => {
                     role: result.data.role
                 })
             } else {
-                toast({
-                    colorScheme: 'red',
-                    position: 'top',
-                    title: 'There was an error retrieving this user.',
-                    description: result.error
-                })
+                nav('/error')
             }
 
             setLoading(false);
         }
 
         retrieveUser();
-    }, [id, toast])
+    }, [id, toast, nav])
 
     const handleDelete = async () => {
         const result = await deleteUser(form.user_id);
@@ -92,6 +86,11 @@ const EditPage = () => {
             })
 
             if(result.data) {
+                toast({
+                    position: 'top',
+                    colorScheme: 'green',
+                    title: "User updated successfully.",
+                })
                 nav('/')
             } else {
                 toast({

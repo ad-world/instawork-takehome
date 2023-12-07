@@ -37,7 +37,7 @@ const ListPage = () => {
                                 <HStack>
                                     <Avatar size={'md'} name={`${member.first_name} ${member.last_name}`} />
                                     <VStack justifyContent={'left'} align='flex-start'>
-                                        <Heading size={'md'}>{member.first_name} {member.last_name}</Heading>
+                                        <Heading size={'md'}>{member.first_name} {member.last_name} {member.role == 'admin' && '(admin)'}</Heading>
                                         <Heading size={'sm'} color={'gray'}>{member.email}</Heading>
                                         <Heading size={'sm'} color={'gray'}>{member.phone_number}</Heading>
                                     </VStack>

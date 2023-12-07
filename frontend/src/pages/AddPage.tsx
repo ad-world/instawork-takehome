@@ -35,6 +35,12 @@ const AddPage = () => {
             })
 
             if (result.data) {
+                toast({
+                    position: 'top',
+                    colorScheme: 'green',
+                    title: 'User created successfully.',
+                    description: result.error
+                })
                 nav('/');
             } else {
                 toast({
