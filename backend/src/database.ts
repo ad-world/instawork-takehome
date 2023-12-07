@@ -1,14 +1,14 @@
 import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
 
-let sql = `CREATE TABLE users (
-    user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    first_name TEXT NOT NULL,
-    last_name TEXT NOT NULL,
-    phone_number TEXT,
-    email TEXT NOT NULL,
-    role TEXT NOT NULL
-  );`;
+let sql = `CREATE TABLE IF NOT EXISTS users (
+        user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        first_name TEXT NOT NULL,
+        last_name TEXT NOT NULL,
+        phone_number TEXT,
+        email TEXT NOT NULL,
+        role TEXT NOT NULL
+    );`;
 
 const initDb = async () => {
     const db = await open({

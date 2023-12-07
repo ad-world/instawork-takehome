@@ -6,6 +6,7 @@ This is a basic team management web application that allows you to view users, a
 - Node v18
 - Nvm v0.39.2
 - Npm v8.1.2
+- Docker v20+
 
 # Building and Testing
 1. [With Docker](#building-and-testing-with-docker) (recommended)
@@ -18,6 +19,7 @@ This is a basic team management web application that allows you to view users, a
 
 
 ## Building and Testing without Docker
+0. Make sure you are using node v18+. `nvm use 18`. 
 1. Install dependencies for backend: `cd backend/ && npm install`
 2. Build the backend: `npm run build` from the `backend/` directory
 3. Run the backend: `npm run start`. This will serve the backend on port 3000
