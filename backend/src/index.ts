@@ -34,10 +34,7 @@ app.get("/user/:user_id", async (req: Request, res: Response) => {
 
 app.post("/user", async (req: Request, res: Response) => {
     try {
-        console.log(req);
         const user = req.body;
-
-        console.log(req.body);
 
         const result = await addUser(user);
 
