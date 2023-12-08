@@ -29,6 +29,7 @@ const AddPage = () => {
     })
 
     const handleSubmit = async () => {
+        // Validate form and then send user to API to be created
         if (validateForm(form, setFormError as never, true)) {
             const result = await createUser({
                 first_name: form.firstName,

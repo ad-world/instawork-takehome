@@ -33,6 +33,7 @@ const EditPage = () => {
     })
 
     useEffect(() => {
+        // Retriueve user by ID and populate form
         const retrieveUser = async () => {
             const result = await getUserById(Number(id));
 
@@ -56,6 +57,7 @@ const EditPage = () => {
     }, [id, toast, nav])
 
     const handleDelete = async () => {
+        // Send user ID to API to be deleted
         const result = await deleteUser(form.user_id);
         if(result.data) {
             toast({
@@ -76,6 +78,7 @@ const EditPage = () => {
 
 
     const handleSubmit = async () => {
+        // Validate form and then send user to API to be updated
         if (validateForm(form, setFormError, false)) {
             const result = await updateUser({
                 user_id: form.user_id,
