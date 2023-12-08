@@ -7,6 +7,7 @@ let sql = `CREATE TABLE IF NOT EXISTS users (
         last_name TEXT NOT NULL,
         phone_number TEXT,
         email TEXT NOT NULL,
+        password TEXT NOT NULL,
         role TEXT NOT NULL
     );`;
 
@@ -17,7 +18,7 @@ const initDb = async () => {
     });
 
     try {
-        await db.exec(sql);
+        await db.run(sql);
     } catch (err) {
         console.log(err);
     }

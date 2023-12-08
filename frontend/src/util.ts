@@ -3,6 +3,7 @@ export interface UserDetailsForm {
     lastName: string;
     email: string;
     phoneNumber: number | null;
+    password: string;
     role: string;
 }
 
@@ -11,18 +12,19 @@ export interface UserDetailsError {
     lastName: string;
     email: string;
     phoneNumber: string;
+    password: string;
 }
 
-export const validateForm = (form: UserDetailsForm, setFormError: React.Dispatch<React.SetStateAction<UserDetailsError>>) => {
+export const validateForm = (form: UserDetailsForm | Omit<UserDetailsForm, 'password'>, setFormError: React.Dispatch<React.SetStateAction<UserDetailsError | Omit<UserDetailsError, "password">>>, withPassword: boolean) => {
     let valid = true;
-    if(form.firstName === '') {
+    if (form.firstName === '') {
         setFormError(formError => ({ ...formError, firstName: 'First name is required' }));
         valid = false;
     } else {
         setFormError(formError => ({ ...formError, firstName: '' }));
     }
 
-    if(form.lastName === '') {
+    if (form.lastName === '') {
         setFormError(formError => ({ ...formError, lastName: 'Last name is required' }));
         valid = false;
     } else {
@@ -48,6 +50,15 @@ export const validateForm = (form: UserDetailsForm, setFormError: React.Dispatch
         valid = false;
     } else {
         setFormError((formError) => ({ ...formError, phoneNumber: '' }));
+    }
+
+    if (withPassword) {
+        if ((form as UserDetailsForm).password === '') {
+            setFormError((formError) => ({ ...formError, password: 'Password is required' }));
+            valid = false;
+        } else {
+            setFormError((formError) => ({ ...formError, password: '' }));
+        }
     }
     // Add your validation logic here
     return valid

@@ -1,11 +1,38 @@
 import express, { Request, Response } from 'express'
 import cors from 'cors'
 import './database'
-import { addUser, deleteUser, getUser, getUserById, updateUser } from './controllers';
+import { addUser, deleteUser, getUser, getUserByEmail, getUserById, updateUser } from './controllers';
+import { validatePassword } from './util';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+app.post("/login", async (req: Request, res: Response) => {
+    try {
+        const { email, password } = req.body;
+
+        const user = await getUserByEmail(email);
+        if(!user) {
+            return res.status(404).json({ error: "A user with this email does not exist." });
+        }
+
+        const isPasswordCorrect = await validatePassword(password, user.password);
+        if(!isPasswordCorrect) {
+            return res.status(401).json({ error: "Incorrect password entered." });
+        }
+        
+        return res.status(200).json({ 
+            user_id: user.user_id, 
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+            phone_number: user.phone_number,
+            role: user.role });
+    } catch (err) {
+        return res.status(500).json({ error: (err as any).message });
+    }
+})
 
 app.get("/users", async (req: Request, res: Response) => {
     try {

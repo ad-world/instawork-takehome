@@ -1,19 +1,22 @@
 import { Box, Button, ButtonGroup, Center, FormControl, FormHelperText, FormLabel, HStack, Heading, IconButton, Input, NumberInput, NumberInputField, Radio, RadioGroup, Stack, VStack, useToast } from "@chakra-ui/react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { UserDetailsError, UserDetailsForm, validateForm } from "../util";
 import { createUser } from "../api";
 import { useNavigate } from "react-router-dom";
 import { ArrowBackIcon } from "@chakra-ui/icons";
+import UserContext from "../context/UserContext";
 
 
 const AddPage = () => {
     const nav = useNavigate();
     const toast = useToast();
+    const { user } = useContext(UserContext)
     const [form, setForm] = useState<UserDetailsForm>({
         firstName: '',
         lastName: '',
         email: '',
         phoneNumber: null,
+        password: '',
         role: 'regular'
     })
 
@@ -21,16 +24,18 @@ const AddPage = () => {
         firstName: '',
         lastName: '',
         email: '',
+        password: '',
         phoneNumber: ''
     })
 
     const handleSubmit = async () => {
-        if (validateForm(form, setFormError)) {
+        if (validateForm(form, setFormError as never, true)) {
             const result = await createUser({
                 first_name: form.firstName,
                 last_name: form.lastName,
                 email: form.email,
                 phone_number: form?.phoneNumber?.toString() ?? '',
+                password: form.password,
                 role: form.role
             })
 
@@ -81,11 +86,14 @@ const AddPage = () => {
                             <NumberInputField value={form.phoneNumber ?? undefined} onChange={(e) => setForm({ ...form, phoneNumber: Number(e.currentTarget.value) })}></NumberInputField>
                         </NumberInput>
                         {formError.phoneNumber && <FormHelperText color='red' mb={2}>{formError.phoneNumber}</FormHelperText>}
+                        <FormLabel>Password</FormLabel>
+                        <Input type="passowrd" value={form.password} onChange={(e) => setForm({ ...form, password: e.currentTarget.value })}></Input>
+                        {formError.password && <FormHelperText color='red' mb={2}>{formError.password}</FormHelperText>}
                         <FormLabel>Role</FormLabel>
-                        <RadioGroup value={form.role} onChange={(e) => setForm({ ...form, role: e })}>
+                        <RadioGroup value={form.role} onChange={(e) => setForm({ ...form, role: e })} isDisabled={form.role == 'admin' && user?.role !== 'admin'}>
                             <Stack direction="column" >
                                 <Radio value="regular">Regular (cannot delete users)</Radio>
-                                <Radio value="admin">Admin (can delete users)</Radio>
+                                <Radio value="admin" isDisabled={user?.role !== 'admin'}>Admin (can delete users) </Radio>
                             </Stack>
                         </RadioGroup>
                     </FormControl>

@@ -1,11 +1,12 @@
 import { Box, Button, ButtonGroup, Center, FormControl, FormHelperText, FormLabel, HStack, Heading, IconButton, Input, NumberInput, NumberInputField, Radio, RadioGroup, Spinner, Stack, VStack, useToast } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserDetailsError, UserDetailsForm, validateForm } from "../util";
 import { deleteUser, getUserById, updateUser } from "../api";
 import { ArrowBackIcon } from "@chakra-ui/icons";
+import UserContext from "../context/UserContext";
 
-interface UpdateForm extends UserDetailsForm {
+interface UpdateForm extends Omit<UserDetailsForm, 'password'> {
     user_id: number
 }
 
@@ -14,7 +15,7 @@ const EditPage = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const toast = useToast();
     const nav = useNavigate();
-
+    const { user } = useContext(UserContext);
     const [form, setForm] = useState<UpdateForm>({
         user_id: 0,
         firstName: '',
@@ -24,7 +25,7 @@ const EditPage = () => {
         role: 'regular'
     })
 
-    const [formError, setFormError] = useState<UserDetailsError>({
+    const [formError, setFormError] = useState<Omit<UserDetailsError, 'password'>>({
         firstName: '',
         lastName: '',
         email: '',
@@ -75,7 +76,7 @@ const EditPage = () => {
 
 
     const handleSubmit = async () => {
-        if (validateForm(form, setFormError)) {
+        if (validateForm(form, setFormError, false)) {
             const result = await updateUser({
                 user_id: form.user_id,
                 first_name: form.firstName,
@@ -133,7 +134,7 @@ const EditPage = () => {
                             </NumberInput>
                             {formError.phoneNumber && <FormHelperText color='red' mb={2}>{formError.phoneNumber}</FormHelperText>}
                             <FormLabel>Role</FormLabel>
-                            <RadioGroup value={form.role} onChange={(e) => setForm({ ...form, role: e })}>
+                            <RadioGroup value={form.role} onChange={(e) => setForm({ ...form, role: e })} isDisabled={user?.role !== 'admin'}>
                                 <Stack direction="column" >
                                     <Radio value="regular">Regular (cannot delete users)</Radio>
                                     <Radio value="admin">Admin (can delete users)</Radio>
@@ -143,7 +144,7 @@ const EditPage = () => {
                     </VStack>
 
                     <HStack justifyContent={'space-between'} mt={8}>
-                        <Button colorScheme="red" onClick={() => handleDelete()}>Delete Team Member</Button>
+                        <Button colorScheme="red" onClick={() => handleDelete()} isDisabled={user?.role !== 'admin'}>Delete Team Member</Button>
                         <Button colorScheme="blue" onClick={() => handleSubmit()}>Edit Team Member</Button>
                     </HStack>
                 </Box>

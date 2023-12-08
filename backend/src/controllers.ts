@@ -1,4 +1,5 @@
 import { getDb } from "./database"
+import { hashPassword } from "./util";
 
 interface User {
     user_id: number;
@@ -7,6 +8,10 @@ interface User {
     phone_number: string;
     email: string;
     role: string;
+}
+
+interface UserWithPassword extends User {
+    password: string;
 }
 
 export const getUser = async () => {
@@ -23,13 +28,24 @@ export const getUserById = async (user_id: number) => {
     return user;
 }
 
-export const addUser = async (user: Omit<User, 'user_id'>) => {
+export const getUserByEmail = async (email: string) => {
     const db = await getDb();
-    const result = await db.run('INSERT INTO users (first_name, last_name, phone_number, email, role) VALUES (?, ?, ?, ?, ?)', [
+    const user: UserWithPassword | undefined = await db.get('SELECT * FROM users WHERE email = ?', [email]);
+
+    return user;
+}
+
+export const addUser = async (user: Omit<UserWithPassword, 'user_id'>) => {
+    const db = await getDb();
+
+    const hashedPassword = await hashPassword(user.password);
+
+    const result = await db.run('INSERT INTO users (first_name, last_name, phone_number, email, password, role) VALUES (?, ?, ?, ?, ?, ?)', [
         user.first_name,
         user.last_name,
         user.phone_number,
         user.email,
+        hashedPassword,
         user.role
     ]);
 
@@ -60,6 +76,12 @@ export const updateUser = async (user: User) => {
 
 export const deleteUser = async (user_id: number) => {
     const db = await getDb();
+
+    const currentDbSize = await getUser();
+    if(currentDbSize.length <= 1) {
+        throw new Error("Cannot delete this user as they are the last remaining user on the team.")
+    }
+
     const result = await db.run('DELETE FROM users WHERE user_id = ?', [user_id]);
 
     if(result.changes) {

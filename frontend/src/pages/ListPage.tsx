@@ -1,13 +1,15 @@
 import { AddIcon } from "@chakra-ui/icons";
-import { Avatar, Box, Center, HStack, Heading, IconButton, Spinner, VStack } from "@chakra-ui/react";
+import { Avatar, Box, Button, Center, HStack, Heading, IconButton, Spinner, VStack } from "@chakra-ui/react";
 import { User, getUsers } from "../api";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import UserContext from "../context/UserContext";
 
 const ListPage = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const nav = useNavigate();
+    const { setUser } = useContext(UserContext);
     useEffect(() => {
         const getUserList = async () => {
             const data = await getUsers();
@@ -45,6 +47,12 @@ const ListPage = () => {
                             </Box>
                         ))}
                     </VStack>
+                    <HStack justifyContent={'flex-end'} mt={8}>
+                        <Button colorScheme='red' onClick={() => {
+                            setUser(null);
+                            nav("/login")
+                        }}>Logout</Button>
+                    </HStack>
                 </Box>}
         </Center>
 
