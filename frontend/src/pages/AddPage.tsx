@@ -88,7 +88,7 @@ const AddPage = () => {
                         </NumberInput>
                         {formError.phoneNumber && <FormHelperText color='red' mb={2}>{formError.phoneNumber}</FormHelperText>}
                         <FormLabel>Password</FormLabel>
-                        <Input type="passowrd" value={form.password} onChange={(e) => setForm({ ...form, password: e.currentTarget.value })}></Input>
+                        <Input type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.currentTarget.value })}></Input>
                         {formError.password && <FormHelperText color='red' mb={2}>{formError.password}</FormHelperText>}
                         <FormLabel>Role</FormLabel>
                         <RadioGroup value={form.role} onChange={(e) => setForm({ ...form, role: e })} isDisabled={form.role == 'admin' && user?.role !== 'admin'}>

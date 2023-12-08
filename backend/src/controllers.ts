@@ -120,6 +120,12 @@ export const deleteUser = async (user_id: number): Promise<boolean> => {
         throw new Error("Cannot delete this user as they are the last remaining user on the team.");
     }
 
+    const currentAdmins = currentDbSize.filter(user => user.role === 'admin');
+    if(currentAdmins.length <= 1) {
+        // Cannot delete the last remaining admin on the team - then there would be no way to log in as an admin or create new admins
+        throw new Error("Cannot delete this user as they are the only admin on the team.");
+    }
+
     const result = await db.run('DELETE FROM users WHERE user_id = ?', [user_id]);
 
     if (result.changes) {
