@@ -7,6 +7,7 @@ This is a basic team management web application that allows you to view users, a
 - Nvm v0.39.2
 - Npm v8.1.2
 - Docker v20+
+- SQLite
 
 # Building and Testing
 1. [With Docker](#building-and-testing-with-docker) (recommended)
