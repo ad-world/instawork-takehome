@@ -7,4 +7,6 @@ export const ErrorMap = {
     1004: 'Unable to create user. Please try again later.',
     1005: 'Unable to update user. Please try again later.',
     1006: 'Unable to delete user. Please try again later.',
+    1007: 'Cannot delete last remaining user on team. Please add another user before deleting this one.',
+    1008: 'Cannot delete last remaining admin on team. Please add another admin before deleting this one.',
 }

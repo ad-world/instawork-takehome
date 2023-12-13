@@ -150,6 +150,23 @@ app.put('/user', async (req: Request, res: Response) => {
 app.delete('/user/:user_id', async (req: Request, res: Response) => {
     try {
         const user_id = Number(req.params.user_id);
+
+        const currentDbSize = await getUser();
+        if (currentDbSize.length <= 1) {
+            // Cannot delete the last remaining user on the team - then there would be no way to log in
+            return res.status(409).json({
+                errorCode: ErrorCodes.LAST_REMAINING_USER,
+            })
+        }
+
+        const currentAdmins = currentDbSize.filter(user => user.role === 'admin');
+        if(currentAdmins.length <= 1 && currentAdmins[0].user_id === user_id) {
+            // Cannot delete the last remaining admin on the team - then there would be no way to log in as an admin or create new admins
+            return res.status(409).json({
+                errorCode: ErrorCodes.LAST_REMAINING_ADMIN,
+            })
+        }
+
         const result = await deleteUser(user_id);
 
         if (result) {
