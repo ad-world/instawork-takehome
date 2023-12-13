@@ -1,3 +1,4 @@
+import { ErrorMap } from "./errors";
 const API_URL = "http://localhost:3000"
 
 export interface User {
@@ -30,7 +31,7 @@ export const getUsers = async (): Promise<APIResponse<Array<User>>> => {
     } else {
         return { 
             data: null,
-            error: users.error
+            error: ErrorMap[users.errorCode as keyof typeof ErrorMap]
          };
     }
 }
@@ -47,7 +48,7 @@ export const getUserById = async (user_id: number): Promise<APIResponse<User>> =
     } else {
         return {
             data: null,
-            error: user.error
+            error: ErrorMap[user.errorCode as keyof typeof ErrorMap]
         }
     }
 }
@@ -72,7 +73,7 @@ export const createUser = async (user: Omit<UserWithPassword, 'user_id'>): Promi
     } else {
         return {
             data: null,
-            error: result.error
+            error: ErrorMap[result.errorCode as keyof typeof ErrorMap]
         }
     }
 }
@@ -96,7 +97,7 @@ export const updateUser = async (user: User): Promise<APIResponse<boolean>> => {
     } else {
         return {
             data: false,
-            error: result.error
+            error: ErrorMap[result.errorCode as keyof typeof ErrorMap]
         }
     }
 }
@@ -116,7 +117,7 @@ export const deleteUser = async (user_id: number): Promise<APIResponse<boolean>>
     } else {
         return {
             data: false,
-            error: result.error
+            error: ErrorMap[result.errorCode as keyof typeof ErrorMap]
         }
     }
 }
@@ -143,7 +144,7 @@ export const login = async (email: string, password: string): Promise<APIRespons
     } else {
         return {
             data: null,
-            error: result.error
+            error: ErrorMap[result.errorCode as keyof typeof ErrorMap]
         }
     }
 }
