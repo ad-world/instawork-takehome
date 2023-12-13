@@ -72,8 +72,8 @@ const LoginPage = () => {
     }
 
     return (
-        <Center minH='100vh' minW='100vw' bgColor={'lightgray'}>
-            <Box bgColor={'white'} w='600px' p={8}>
+        <Center minH='100vh' minW='100vw' bgColor={'lightgray'} minWidth={'300px'}>
+            <Box bgColor={'white'} w={['100%', '75%', '50%']} p={8}>
                 <Heading size='xl'>Login</Heading>
                 <VStack>
                     <FormControl>

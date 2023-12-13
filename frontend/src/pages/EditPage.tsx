@@ -109,9 +109,9 @@ const EditPage = () => {
 
 
     return (
-        <Center minH='100vh' minW='100vw' bgColor={'lightgray'}>
+        <Center minH='100vh' minW='100vw' bgColor={'lightgray'} minWidth={'300px'}>
             {loading ? <Spinner size='lg' /> :
-                <Box bgColor={'white'} w='600px' p={8}>
+                <Box bgColor={'white'} w={['100%', '75%', '50%']} p={8}>
                     <ButtonGroup size='sm' isAttached mb={5}>
                         <IconButton aria-label='back' onClick={() => nav('/')} icon={<ArrowBackIcon />}></IconButton>
                     </ButtonGroup>

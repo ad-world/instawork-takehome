@@ -25,9 +25,9 @@ const ListPage = () => {
 
 
     return (
-        <Center minH='100vh' minW='100vw' bgColor={'lightgray'}>
+        <Center minH='100vh' minW='100vw' bgColor={'lightgray'} minWidth={'300px'}>
             {loading ? <Spinner size='lg' /> :
-                <Box bgColor={'white'} w='600px' p={8}>
+                <Box bgColor={'white'} w={['100%', '75%', '50%']} p={8}>
                     <HStack justifyContent={'space-between'}>
                         <Heading size={'xl'}>Team members</Heading>
                         <IconButton aria-label="Add team member" icon={<AddIcon w={6} h={6} onClick={() => nav('/add')}/>} />

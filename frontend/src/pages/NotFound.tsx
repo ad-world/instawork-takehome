@@ -3,7 +3,7 @@ import { Center, Heading, VStack, Link } from "@chakra-ui/react"
 
 const NotFound = () => {
     return (
-        <Center minH='100vh' minW='100vw' bgColor={'lightgray'}>
+        <Center minH='100vh' minW='100vw' bgColor={'lightgray'} minWidth={'300px'}>
             <VStack align={'left'}>
                 <Heading size='xl'>This page does not exist</Heading>
                 <Heading size='md'>
